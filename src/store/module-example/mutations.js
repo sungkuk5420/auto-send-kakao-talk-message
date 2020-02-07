@@ -1,8 +1,8 @@
 import { T } from "./types";
 
 export const mutations = {
-  [T.GET_TEAM_CARDS](state, result) {
-    // console.log(`mutation [T.GET_TEAM_CARDS] ${result}`);
-    state.teamCards = result;
+  [T.GET_FRIEND_LIST](state, result) {
+    console.log(`mutation [T.GET_FRIEND_LIST] ${result}`);
+    state.friendList = result;
   }
 };

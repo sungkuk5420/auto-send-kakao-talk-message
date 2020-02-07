@@ -1,45 +1,33 @@
 import axios from "axios";
 
-const apiURL = "http://localhost:5000";
+const apiURL = "https://kauth.kakao.com";
+// const apiURL = "http://localhost:3000";
 // const apiURL = "https://devkim.dev/hackathon";
 
 export const ajaxActions = {
-  addTeamCard(params, cSuccess, cError) {
+  getFriendList(params, cSuccess, cError) {
     // console.log(params);
     let options = {
       url() {
-        return `${apiURL}/addTeamCard`;
+        return `https://kauth.kakao.com/oauth/authorize?client_id=aa516ad47b8f19715cc2f0b87c03402b&redirect_uri=http://localhost:8080/#/oauth&response_type=code&scope=talk_message`;
       }
     };
     let api = axios.create();
-    // console.log("url= ", options.url());
-
-    const formData = new FormData();
-    formData.append("mainImage", params.addTeamCard.mainImage);
-    formData.append("firstPeopleImage", params.addTeamCard.firstPeopleImage);
-    formData.append("secondPeopleImage", params.addTeamCard.secondPeopleImage);
-    formData.append("addTeamCard", JSON.stringify(params.addTeamCard));
-    axios
-      .all([
-        api.post(options.url(), formData, {
-          headers: {
-            "content-type": "multipart/form-data"
-          }
-        })
-      ])
-      .then(responses => {
-        let errors = responses.filter(res => {
-          return res.status !== 200;
-        });
-        if (errors.length < 1) {
-          // console.log("200 response= ", responses[0]);
-          cSuccess(responses[0]);
-        } else {
-          let errmsgs = errors.reduce((memo = "", res) => {
-            return memo + `${res.status} : ${res.message} \n`;
-          }, "");
-          console.warn(errmsgs);
-        }
+    axios.all([api.get(options.url())]).then(responses => {
+      let errors = responses.filter(res => {
+        return res.status !== 200;
       });
+      if (errors.length < 1) {
+        console.log("200 response= ", responses[0]);
+        // document.body.innerHTML = responses[0].data;
+        window.location.href = responses[0].data;
+        cSuccess(responses[0]);
+      } else {
+        let errmsgs = errors.reduce((memo = "", res) => {
+          return memo + `${res.status} : ${res.message} \n`;
+        }, "");
+        console.warn(errmsgs);
+      }
+    });
   }
 };
