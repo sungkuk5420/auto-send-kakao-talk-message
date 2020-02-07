@@ -1,0 +1,3 @@
+export const T = {
+  CHANGE_MODAL_VISIBLE: "CHANGE_MODAL_VISIBLE"
+};
